@@ -3,7 +3,7 @@
 ## docker network
 1. docker network ls
 1. docker network create
-    - docker network create -d=bridge --subnet=192.168.10.0/24 --ip-range=192.168.10.0/24 --gateway=192.168.10.1 mynetwork
+    - docker network create -d=bridge --subnet=172.168.10.0/24 --ip-range=172.168.10.0/24 --gateway=172.168.10.1 mynetwork
 1. docker network inspect
     - docker network inspect mynetwork
 
@@ -43,8 +43,8 @@
 
 ---
 ## container 실행
-- docker run -it --rm -p 9200:9200 --network mynetwork --add-host eshost1:192.168.10.2 --add-host eshost2:192.168.10.3 --add-host eshost3:192.168.10.4 --ip=192.168.10.2 -e NODENAME=esnode1 -u elasticsearch es
-- docker run -it --rm --network mynetwork --add-host eshost1:192.168.10.2 --add-host eshost2:192.168.10.3 --add-host eshost3:192.168.10.4 --ip=192.168.10.3 -e NODENAME=esnode2 -u elasticsearch es
-- docker run -it --rm --network mynetwork --add-host eshost1:192.168.10.2 --add-host eshost2:192.168.10.3 --add-host eshost3:192.168.10.4 --ip=192.168.10.4 -e NODENAME=esnode3 -u elasticsearch es
+- docker run -it --rm -p 9200:9200 --network mynetwork --add-host eshost1:172.168.10.2 --add-host eshost2:172.168.10.3 --add-host eshost3:172.168.10.4 --ip=172.168.10.2 -e NODENAME=esnode1 -u elasticsearch es
+- docker run -it --rm --network mynetwork --add-host eshost1:172.168.10.2 --add-host eshost2:172.168.10.3 --add-host eshost3:172.168.10.4 --ip=172.168.10.3 -e NODENAME=esnode2 -u elasticsearch es
+- docker run -it --rm --network mynetwork --add-host eshost1:172.168.10.2 --add-host eshost2:172.168.10.3 --add-host eshost3:172.168.10.4 --ip=172.168.10.4 -e NODENAME=esnode3 -u elasticsearch es
 - 확인
     - localhost:9200/_cat/nodes?pretty=true
