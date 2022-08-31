@@ -1,5 +1,7 @@
 version: "3"
 
+# /usr/share/elasticsearch/config
+
 networks:
   mynetwork:
     driver: bridge
