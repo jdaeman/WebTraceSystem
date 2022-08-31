@@ -1,0 +1,109 @@
+version: "3"
+
+services:
+  eshost1:
+    image: elasticsearch:7.16.2
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode1
+      - NODE1=esnode1
+      - NODE2=esnode2
+      - NODE3=esnode3
+    ports:
+      - 9200:9200
+    container_name: es1
+    volumes:
+      - .\\config\\es:/usr/share/elasticsearch/config
+      - .\\data\\es1\\data:/es/data
+      - .\\data\\es1\\log:/es/log
+    
+  eshost2:
+    image: elasticsearch:7.16.2
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode2
+      - NODE1=esnode1
+      - NODE2=esnode2
+      - NODE3=esnode3
+    container_name: es2
+    depends_on:
+      - eshost1
+    volumes:
+      - .\\config\\es:/usr/share/elasticsearch/config
+      - .\\data\\es2\\data:/es/data
+      - .\\data\\es2\\log:/es/log
+
+  eshost3:
+    image: elasticsearch:7.16.2
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode3
+      - NODE1=esnode1
+      - NODE2=esnode2
+      - NODE3=esnode3
+    container_name: es3
+    depends_on:
+      - eshost2
+    volumes:
+      - .\\config\\es:/usr/share/elasticsearch/config
+      - .\\data\\es3\\data:/es/data
+      - .\\data\\es3\\log:/es/log
+
+  kibana:
+    image: kibana:7.16.2
+    restart: always
+    user: kibana
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - eshost3
+    volumes:
+      - .\\config\\kib:/usr/share/kibana/config
+      - .\\data\\kib\\log:/kibana/log
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.4.9
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+    depends_on:
+      - eshost1
+    volumes:
+      - .\\data\\zookeeper\\data:/var/lib/zookeeper/data
+      - .\\data\\zookeeper\\log:/var/lib/zookeeper/log
+
+  kafka:
+    image: confluentinc/cp-kafka:5.4.9
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+    volumes:
+      - .\\data\\kafka\\data:/var/lib/kafka/data
+  
+  logstash:
+    image: logstash:7.16.2
+    container_name: logstash
+    restart: always
+    depends_on:
+      - kafka
+    volumes:
+      - .\\config\\logstash:/usr/share/logstash/config
+    command: ./bin/logstash --path.settings /usr/share/logstash/config --config.reload.automatic
