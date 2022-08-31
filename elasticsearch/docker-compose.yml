@@ -1,0 +1,80 @@
+version: "3"
+
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 171.168.10.0/24
+         ip_range: 171.168.10.0/24
+         gateway: 171.168.10.1
+
+
+services:
+  es1:
+    image: es
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode1
+    ports:
+      - 9200:9200
+    container_name: es1
+    networks:
+      mynetwork:
+        ipv4_address: 171.168.10.2
+    extra_hosts:
+      eshost1: 171.168.10.2
+      eshost2: 171.168.10.3
+      eshost3: 171.168.10.4
+
+  es2:
+    image: es
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode2
+    container_name: es2
+    networks:
+      mynetwork:
+        ipv4_address: 171.168.10.3
+    extra_hosts:
+      eshost1: 171.168.10.2
+      eshost2: 171.168.10.3
+      eshost3: 171.168.10.4
+    depends_on:
+      - es1
+
+  es3:
+    image: es
+    restart: always
+    user: elasticsearch
+    environment:
+      - NODENAME=esnode3
+    container_name: es3
+    networks:
+      mynetwork:
+        ipv4_address: 171.168.10.4
+    extra_hosts:
+      eshost1: 171.168.10.2
+      eshost2: 171.168.10.3
+      eshost3: 171.168.10.4
+    depends_on:
+      - es2
+
+  kibana:
+    image: kib
+    restart: always
+    user: kibana
+    container_name: kibana
+    ports:
+      - 5601:5601
+    networks:
+      mynetwork:
+        ipv4_address: 171.168.10.5
+    extra_hosts:
+      eshost1: 171.168.10.2
+      eshost2: 171.168.10.3
+      eshost3: 171.168.10.4
+    depends_on:
+      - es3
