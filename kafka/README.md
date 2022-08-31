@@ -63,5 +63,21 @@
     - bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group test3group --topic mytest --reset-offsets --to-earliest --execute
 
 ---
+## docker
+- ubuntu image 에 kafka download 후 container 를 생성하면, 
+- host 머신에서 접속 하기 어려워보임
+    - listeners
+        - kafka broker 가 내부적으로 바인딩 하는 주소
+        - zookeeper 가 kafka broker 를 관리한다.
+    - advertised.listeners
+        - kafka producer, consumer 에게 노출할 주소
+    - host 머신에서 container에 ip 로 접속할 수 없기 때문 인듯.
+- **docker hub 에서 image 를 pull 해서 사용하는 편이 좋다.**
+    - https://hub.docker.com/r/confluentinc/cp-kafka
+- mount 
+    - /var/lib/zookeeper/data
+    - /var/lib/zookeeper/log
+    - /var/lib/kafka/data
+---
 ## 기타
 - Command must include exactly one action: --list, --describe, --delete, --reset-offsets, --delete-offsets
