@@ -39,3 +39,9 @@
 ---
 ## links
 - 네트워크 상에서 컨테이너의 통신을 다룬다.
+
+---
+## inspect
+1. docker image inspect "" 
+    - Dockerbuild 를 역추적 할 수 있음
+    - VOLUMES , CMD 등등
