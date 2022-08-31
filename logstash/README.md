@@ -5,10 +5,11 @@
     - bootstrap_servers
     - topics
     - group_id
-        - group 은 먼저 만들어야 함
+        - ~~group 은 먼저 만들어야 함~~
+        - group 이 없어도, auto_offset_rest => "earliest" 로 하면 group 을 생성함 / topic 역시.
     - auto_offset_reset
-        - earliest: 가장 처음 offset 부터
-        - latest: 마지막으로 consume 한 offset 부터
+        - earliest: offset 을 가장 빠른 offset 으로 자동 재설정
+        - latest: offset 을 가장 최신 offset 으로 자동 재설정
         - none: 해당 consumer group이 가져가고자 하는 topic의 consuer offset정보가 없으면 exception을 발생시킴
 
 ---
