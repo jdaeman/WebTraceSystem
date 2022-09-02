@@ -1,0 +1,17 @@
+{
+    "name": "web tracker",
+    "description": "trace your access site",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["storage", "activeTab", "scripting", "tabs", "webRequest"],
+    "action": {
+        "default_popup": "main.html"
+    },
+    "host_permissions": [
+        "http://*/*",
+        "https://*/*"
+    ]
+}
