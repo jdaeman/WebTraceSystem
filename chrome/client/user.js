@@ -5,7 +5,8 @@ const ON_MESSAGE_LOGGING = "req_logging";
 
 document.addEventListener("DOMContentLoaded", () => {
     const main = document.querySelector("#main");
-    const button = document.querySelector('#button');
+    const toggleText = document.querySelector('#toggleText');
+    const toggle = document.querySelector('#toggle');
     
     chrome.storage.local.get(STORAGE_PLATFORM_KEY, (result) => {
         const platform = result.platform;
@@ -14,17 +15,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-    button.addEventListener("click", () => {
-        if (button.textContent == "On") {
-            button.textContent = "Off";
+    // button.addEventListener("click", () => {
+    //     if (button.textContent == "On") {
+    //         button.textContent = "Off";
+    //     } else {
+    //         button.textContent = "On";
+    //     }
+
+        
+    // });
+
+
+    toggle.addEventListener('change', () => {
+        if (toggle.checked) {
+            toggleText.textContent = "Toggle On";
         } else {
-            button.textContent = "On";
+            toggleText.textContent = "Toggle Off";
         }
 
         chrome.runtime.sendMessage(JSON.stringify({method: "toggle"}));
     });
-
-
 
 
 

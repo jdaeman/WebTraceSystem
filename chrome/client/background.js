@@ -1,4 +1,6 @@
 
+const controller = new AbortController();
+
 const STORAGE_PLATFORM_KEY = "platform";
 const ON_MESSAGE_LOGGING = "logging";
 const configuration = {traceEnabled: true, broker: "localhost:8080"};
@@ -97,13 +99,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
  * @param {object} data 
  */
 function pushWebLog(data) {
+	const timeoutId = setTimeout(() => controller.abort(), 5000);
     const options = {
         method: 'POST',
         headers : {
             'Accept': 'application/json',
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+		signal: controller.signal
     };
 
     fetch(`http://${configuration.broker}/push`, options)
@@ -119,7 +123,11 @@ function pushWebLog(data) {
         });
     })
     .then(data => console.log(data))
-    .catch(err => console.error(err));
+    .catch(err => console.error(err))
+	.finally(() => {
+		console.log("fetch timeout");
+		clearTimeout(timeoutId);
+	});
 }
 
 
