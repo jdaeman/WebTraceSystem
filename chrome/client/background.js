@@ -123,11 +123,8 @@ function pushWebLog(data) {
         });
     })
     .then(data => console.log(data))
-    .catch(err => console.error(err))
-	.finally(() => {
-		console.log("fetch timeout");
-		clearTimeout(timeoutId);
-	});
+    .catch(err => console.error("fetch timeout", err))
+	.finally(() => clearTimeout(timeoutId));
 }
 
 
