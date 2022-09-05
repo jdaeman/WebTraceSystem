@@ -5,7 +5,7 @@
 # When declaring multiple pipelines, each MUST have its own `pipeline.id`.
 #
 - pipeline.id: main
-  path.config: /usr/share/logstash/config/*.conf
+  path.config: /usr/share/logstash/config/logstash-test.conf
 
 # Example of two pipelines:
 #
