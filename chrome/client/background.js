@@ -36,7 +36,7 @@ function toTimeFormat(timeStamp) {
     const min = alignDigit(tm.getMinutes());
     const sec = alignDigit(tm.getSeconds());
     
-    return year+"-"+month+"-"+day+"T"+hour+":"+min+":"+sec;
+    return year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;
 }
 
 
