@@ -61,8 +61,12 @@ services:
       - 5601:5601
     depends_on:
       - eshost3
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://eshost1:9200","http://eshost2:9200","http://eshost3:9200"]
+      - SERVER_PORT=5601
+      - LOGGING_DEST=/kibana/log/kibana.log
     volumes:
-      - .\\config\\kib:/usr/share/kibana/config
+      #- .\\config\\kib:/usr/share/kibana/config
       - .\\data\\kib\\log:/kibana/log
 
   zookeeper:
