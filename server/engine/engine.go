@@ -83,9 +83,6 @@ func recvWebLog(c *gin.Context) {
 			"message": err.Error(),
 		})
 		
-		userAgent := c.GetHeader("User-Agent")
-		webLog.UserAgent = userAgent
-
 		log.Println("json Unmarshal error", err)
 		return
 	}
@@ -93,6 +90,9 @@ func recvWebLog(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "clear",
 	})
+	
+	userAgent := c.GetHeader("User-Agent")
+	webLog.UserAgent = userAgent
 
 	channel <- webLog
 }
