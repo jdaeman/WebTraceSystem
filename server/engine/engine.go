@@ -82,6 +82,9 @@ func recvWebLog(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
+		
+		userAgent := c.GetHeader("User-Agent")
+		webLog.UserAgent = userAgent
 
 		log.Println("json Unmarshal error", err)
 		return
