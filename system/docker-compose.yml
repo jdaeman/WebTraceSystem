@@ -65,8 +65,8 @@ services:
       - ELASTICSEARCH_HOSTS=["http://eshost1:9200","http://eshost2:9200","http://eshost3:9200"]
       - SERVER_PORT=5601
       - LOGGING_DEST=/kibana/log/kibana.log
+      - LOGGING_QUIET=true
     volumes:
-      #- .\\config\\kib:/usr/share/kibana/config
       - .\\data\\kib\\log:/kibana/log
 
   zookeeper:
