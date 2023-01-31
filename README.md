@@ -13,6 +13,8 @@
         1. sysctl -w vm.max_map_count=262144
 1. cd system
 1. fix .env file contents
+1. build image
+  - docker build . -f docker/Dockerfile -t mybroker:0.1
 1. docker compose up
 1. check kibana access
     - 127.0.0.1:5601

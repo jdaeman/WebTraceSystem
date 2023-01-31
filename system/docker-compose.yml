@@ -115,7 +115,9 @@ services:
   broker:
     image: mybroker:0.1
     container_name: mybroker
+    # kafka 와 연결이 안되면 종료됨.
     restart: always
-    depends_on: kafka
+    depends_on: 
+      - kafka
     command: broker kafka:29092
 
