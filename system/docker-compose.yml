@@ -111,3 +111,11 @@ services:
     volumes:
       - ${logstash_config}:/usr/share/logstash/config
     command: ./bin/logstash --path.settings /usr/share/logstash/config --config.reload.automatic
+
+  broker:
+    image: mybroker:0.1
+    container_name: mybroker
+    restart: always
+    depends_on: kafka
+    command: broker kafka:29092
+
