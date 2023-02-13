@@ -1,0 +1,33 @@
+# kubectl create configmap --save-config logstash \
+# --from-file=logstash/pipelines.yml \
+# --from-file=logstash/logstash-core.conf \
+# --from-file=logstash/jvm.options
+# --from-file=logstash/log4j2.properties \
+# --from-file=logstash/startup.options \
+# --from-file=logstash/logstash.yml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mylogstash
+spec:
+  containers:
+  - name: logstashc
+    image: logstash:7.16.2
+    # command: ["sleep", "2d"]
+    command: ["./bin/logstash", "--path.settings", "/usr/share/logstash/config", "--config.reload.automatic"]
+    resources:
+      limits:
+        memory: 1G
+        cpu: "1"
+    volumeMounts:
+      - name: config
+        mountPath: /usr/share/logstash/config
+  hostAliases:
+    - ip: 10.97.11.20
+      hostnames:
+        - kafka
+  volumes:
+    - name: config
+      configMap:
+        name: logstash
