@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elastic
+spec:
+  serviceName: elastic 
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elastic
+  volumeClaimTemplates:
+  - metadata:
+      name: esvolume
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 2G
+  template:
+    metadata:
+      labels:
+        app: elastic
+    spec:
+      containers:
+        - name: elastic
+          image: elasticsearch:7.16.2
+          resources:
+            limits:
+              memory: 1G
+              cpu: "1"
+          env:
+          - name: TZ
+            value: "Asia/Seoul"
+          - name: podName
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name 
+          - name: cluster.name
+            value: "my-cluster"
+          - name: node.name
+            value: $(podName)
+          - name: network.host
+            value: "0.0.0.0"
+          - name: discovery.seed_hosts
+            value: "elastic-0.elastic.default.svc.cluster.local,elastic-1.elastic.default.svc.cluster.local,elastic-2.elastic.default.svc.cluster.local"
+          - name: cluster.initial_master_nodes
+            value: "elastic-0,elastic-1,elastic-2"
+          - name: path.data
+            value: "/es/data"
+          - name: path.logs
+            value: "/es/log"
+          volumeMounts:
+            - name: esvolume
+              mountPath: /es

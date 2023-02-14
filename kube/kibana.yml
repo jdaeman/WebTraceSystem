@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+spec:
+  containers:
+  - name: kibana
+    image: kibana:7.16.2
+    resources:
+      limits:
+        memory: 1G
+        cpu: 500m
+    env:
+    - name: ELASTICSEARCH_HOSTS
+      value: "[\"http://elastic-0.elastic.default:9200\",\"http://elastic-1.elastic.default:9200\",\"http://elastic-2.elastic.default:9200\"]"
+    - name: SERVER_PORT
+      value: "5601"
