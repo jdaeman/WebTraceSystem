@@ -96,7 +96,7 @@ func StartKafkaHandler(config KafkaConfig, channel *chan interface{}) {
 
 		err = ProduceMessage(buf)
 		if err != nil {
-			log.Println("Fail message produce")
+			log.Println("Fail message produce", err)
 			continue
 		}
 	}

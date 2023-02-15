@@ -10,6 +10,8 @@ spec:
   - name: zookeeper
     image: confluentinc/cp-zookeeper:5.4.9
     env:
+    - name: TZ
+      value: "Asia/Seoul"
     - name: ZOOKEEPER_SERVER_ID
       value: "1"
     - name: ZOOKEEPER_CLIENT_PORT
@@ -27,6 +29,8 @@ spec:
   - name: kafka
     image: confluentinc/cp-kafka:5.4.9
     env:
+    - name: TZ
+      value: "Asia/Seoul"
     - name: POD_IP
       valueFrom:
         fieldRef:
@@ -49,4 +53,5 @@ spec:
       limits:
         memory: 1G
         cpu: "1"
+
 ## topic is created by logstash

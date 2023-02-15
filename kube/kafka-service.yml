@@ -12,6 +12,6 @@ spec:
   - name: kakfa-port
     port: 9092
     targetPort: 9092
-  - name: kafka-port-test
-    port: 29092
-    targetPort: 29092
+  # - name: kafka-port-test
+  #   port: 29092
+  #   targetPort: 29092

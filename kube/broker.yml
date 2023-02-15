@@ -15,4 +15,17 @@ spec:
           cpu: 500m
       command: ["broker"]
       args: ["10.97.11.20:9092"]
-# nodeport
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: broker
+spec:
+  type: LoadBalancer
+  ports:
+  - name: webport
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: broker

@@ -14,7 +14,6 @@ spec:
   containers:
   - name: logstashc
     image: logstash:7.16.2
-    # command: ["sleep", "2d"]
     command: ["./bin/logstash", "--path.settings", "/usr/share/logstash/config", "--config.reload.automatic"]
     resources:
       limits:

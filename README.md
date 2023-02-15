@@ -49,3 +49,8 @@ PUT es7-weblog2
   - edit config/logstash/logstash-core.conf
   - output=> elasticsearch => **index**
   - ann then, make index at kibana 
+
+---
+## some errors
+1. elasticsearch jvm options
+1. volume permissions
